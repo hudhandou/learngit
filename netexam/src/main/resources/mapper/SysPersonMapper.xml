@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.system.mapper.SysPersonMapper">
+  <resultMap id="BaseResultMap" type="com.turing.system.entity.SysPerson">
+    <id column="PP_ID" jdbcType="VARCHAR" property="ppId" />
+    <result column="PP_NO" jdbcType="VARCHAR" property="ppNo" />
+    <result column="PP_MINZU" jdbcType="VARCHAR" property="ppMinzu" />
+    <result column="PP_INFO" jdbcType="VARCHAR" property="ppInfo" />
+    <result column="PP_IN_TIME" jdbcType="TIMESTAMP" property="ppInTime" />
+    <result column="PP_PAY" jdbcType="DECIMAL" property="ppPay" />
+    <result column="PP_STATE" jdbcType="VARCHAR" property="ppState" />
+    <result column="PP_NAME" jdbcType="VARCHAR" property="ppName" />
+    <result column="PP_BIRTH" jdbcType="TIMESTAMP" property="ppBirth" />
+    <result column="PP_SEX" jdbcType="VARCHAR" property="ppSex" />
+    <result column="PP_ADDS" jdbcType="VARCHAR" property="ppAdds" />
+    <result column="PP_PHONE" jdbcType="VARCHAR" property="ppPhone" />
+    <result column="PP_SHENFENZHENG" jdbcType="VARCHAR" property="ppShenfenzheng" />
+    <result column="SP_ID" jdbcType="VARCHAR" property="spId" />
+    <result column="SP_NAME" jdbcType="VARCHAR" property="spName" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="NICK_NAME" jdbcType="VARCHAR" property="nickName" />
+    <result column="DEPT_ID" jdbcType="VARCHAR" property="deptId" />
+    <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+    <result column="PP_PIC" jdbcType="VARCHAR" property="ppPic" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PP_ID, PP_NO, PP_MINZU, PP_INFO, PP_IN_TIME, PP_PAY, PP_STATE, PP_NAME, PP_BIRTH, 
+    PP_SEX, PP_ADDS, PP_PHONE, PP_SHENFENZHENG, SP_ID, USER_ID, DEPT_ID, PP_PIC
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_PERSON
+    where PP_ID = #{ppId,jdbcType=VARCHAR}
+  </select>
+  <select id="selective" parameterType="com.turing.system.entity.SysPerson" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_PERSON
+    where 1=1
+     <if test="ppId != null">
+       and PP_ID = #{ppId,jdbcType=VARCHAR}
+      </if>
+    <if test="ppNo != null">
+        and PP_NO = #{ppNo,jdbcType=VARCHAR}
+      </if>
+      <if test="ppMinzu != null">
+       and  PP_MINZU = #{ppMinzu,jdbcType=VARCHAR}
+      </if>
+      <if test="ppInfo != null">
+        and PP_INFO = #{ppInfo,jdbcType=VARCHAR}
+      </if>
+      <if test="ppInTime != null">
+        and PP_IN_TIME = #{ppInTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="ppPay != null">
+        and PP_PAY = #{ppPay,jdbcType=DECIMAL}
+      </if>
+      <if test="ppState != null">
+        and PP_STATE = #{ppState,jdbcType=VARCHAR}
+      </if>
+      <if test="ppName != null">
+        and PP_NAME like #{ppName,jdbcType=VARCHAR}
+      </if>
+      <if test="ppBirth != null">
+        and PP_BIRTH = #{ppBirth,jdbcType=TIMESTAMP}
+      </if>
+      <if test="ppSex != null">
+        and PP_SEX = #{ppSex,jdbcType=VARCHAR}
+      </if>
+      <if test="ppAdds != null">
+        and PP_ADDS = #{ppAdds,jdbcType=VARCHAR}
+      </if>
+      <if test="ppPhone != null">
+        and PP_PHONE = #{ppPhone,jdbcType=VARCHAR}
+      </if>
+      <if test="ppShenfenzheng != null">
+        and PP_SHENFENZHENG = #{ppShenfenzheng,jdbcType=VARCHAR}
+      </if>
+      <if test="spId != null">
+        and SP_ID = #{spId,jdbcType=VARCHAR}
+      </if>
+      <if test="userId != null">
+        and USER_ID = #{userId,jdbcType=VARCHAR}
+      </if>
+      <if test="deptId != null">
+        and DEPT_ID = #{deptId,jdbcType=VARCHAR}
+      </if>
+      <if test="ppPic != null">
+        and PP_PIC = #{ppPic,jdbcType=VARCHAR}
+      </if>
+  </select>
+  <select id="queryAllInfoById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select s.*,sd.dept_name,sp.sp_name,su.nick_name from sys_person s
+  	left join sys_dept sd on s.dept_id=sd.dept_id 
+  	left join sys_post sp on s.sp_id=sp.sp_id 
+  	left join sys_user su on s.user_id = su.user_id 
+  	where s.pp_id = #{ppId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_PERSON
+    where PP_ID = #{ppId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.system.entity.SysPerson">
+    insert into SYS_PERSON (PP_ID, PP_NO, PP_MINZU, 
+      PP_INFO, PP_IN_TIME, PP_PAY, 
+      PP_STATE, PP_NAME, PP_BIRTH, 
+      PP_SEX, PP_ADDS, PP_PHONE, 
+      PP_SHENFENZHENG, SP_ID, USER_ID, 
+      DEPT_ID, PP_PIC)
+    values (#{ppId,jdbcType=VARCHAR}, #{ppNo,jdbcType=VARCHAR}, #{ppMinzu,jdbcType=VARCHAR}, 
+      #{ppInfo,jdbcType=VARCHAR}, #{ppInTime,jdbcType=TIMESTAMP}, #{ppPay,jdbcType=DECIMAL}, 
+      #{ppState,jdbcType=VARCHAR}, #{ppName,jdbcType=VARCHAR}, #{ppBirth,jdbcType=TIMESTAMP}, 
+      #{ppSex,jdbcType=VARCHAR}, #{ppAdds,jdbcType=VARCHAR}, #{ppPhone,jdbcType=VARCHAR}, 
+      #{ppShenfenzheng,jdbcType=VARCHAR}, #{spId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{deptId,jdbcType=VARCHAR}, #{ppPic,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.system.entity.SysPerson">
+    insert into SYS_PERSON
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ppId != null">
+        PP_ID,
+      </if>
+      <if test="ppNo != null">
+        PP_NO,
+      </if>
+      <if test="ppMinzu != null">
+        PP_MINZU,
+      </if>
+      <if test="ppInfo != null">
+        PP_INFO,
+      </if>
+      <if test="ppInTime != null">
+        PP_IN_TIME,
+      </if>
+      <if test="ppPay != null">
+        PP_PAY,
+      </if>
+      <if test="ppState != null">
+        PP_STATE,
+      </if>
+      <if test="ppName != null">
+        PP_NAME,
+      </if>
+      <if test="ppBirth != null">
+        PP_BIRTH,
+      </if>
+      <if test="ppSex != null">
+        PP_SEX,
+      </if>
+      <if test="ppAdds != null">
+        PP_ADDS,
+      </if>
+      <if test="ppPhone != null">
+        PP_PHONE,
+      </if>
+      <if test="ppShenfenzheng != null">
+        PP_SHENFENZHENG,
+      </if>
+      <if test="spId != null">
+        SP_ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="deptId != null">
+        DEPT_ID,
+      </if>
+      <if test="ppPic != null">
+        PP_PIC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ppId != null">
+        #{ppId,jdbcType=VARCHAR},
+      </if>
+      <if test="ppNo != null">
+        #{ppNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ppMinzu != null">
+        #{ppMinzu,jdbcType=VARCHAR},
+      </if>
+      <if test="ppInfo != null">
+        #{ppInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="ppInTime != null">
+        #{ppInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ppPay != null">
+        #{ppPay,jdbcType=DECIMAL},
+      </if>
+      <if test="ppState != null">
+        #{ppState,jdbcType=VARCHAR},
+      </if>
+      <if test="ppName != null">
+        #{ppName,jdbcType=VARCHAR},
+      </if>
+      <if test="ppBirth != null">
+        #{ppBirth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ppSex != null">
+        #{ppSex,jdbcType=VARCHAR},
+      </if>
+      <if test="ppAdds != null">
+        #{ppAdds,jdbcType=VARCHAR},
+      </if>
+      <if test="ppPhone != null">
+        #{ppPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ppShenfenzheng != null">
+        #{ppShenfenzheng,jdbcType=VARCHAR},
+      </if>
+      <if test="spId != null">
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="ppPic != null">
+        #{ppPic,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.system.entity.SysPerson">
+    update SYS_PERSON
+    <set>
+      <if test="ppNo != null">
+        PP_NO = #{ppNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ppMinzu != null">
+        PP_MINZU = #{ppMinzu,jdbcType=VARCHAR},
+      </if>
+      <if test="ppInfo != null">
+        PP_INFO = #{ppInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="ppInTime != null">
+        PP_IN_TIME = #{ppInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ppPay != null">
+        PP_PAY = #{ppPay,jdbcType=DECIMAL},
+      </if>
+      <if test="ppState != null">
+        PP_STATE = #{ppState,jdbcType=VARCHAR},
+      </if>
+      <if test="ppName != null">
+        PP_NAME = #{ppName,jdbcType=VARCHAR},
+      </if>
+      <if test="ppBirth != null">
+        PP_BIRTH = #{ppBirth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ppSex != null">
+        PP_SEX = #{ppSex,jdbcType=VARCHAR},
+      </if>
+      <if test="ppAdds != null">
+        PP_ADDS = #{ppAdds,jdbcType=VARCHAR},
+      </if>
+      <if test="ppPhone != null">
+        PP_PHONE = #{ppPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ppShenfenzheng != null">
+        PP_SHENFENZHENG = #{ppShenfenzheng,jdbcType=VARCHAR},
+      </if>
+      <if test="spId != null">
+        SP_ID = #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        DEPT_ID = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="ppPic != null">
+        PP_PIC = #{ppPic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PP_ID = #{ppId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateUserIdToNull" parameterType="java.lang.String">
+  	update SYS_PERSON
+  	set USER_ID = null
+  	where PP_ID = #{ppId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.system.entity.SysPerson">
+    update SYS_PERSON
+    set PP_NO = #{ppNo,jdbcType=VARCHAR},
+      PP_MINZU = #{ppMinzu,jdbcType=VARCHAR},
+      PP_INFO = #{ppInfo,jdbcType=VARCHAR},
+      PP_IN_TIME = #{ppInTime,jdbcType=TIMESTAMP},
+      PP_PAY = #{ppPay,jdbcType=DECIMAL},
+      PP_STATE = #{ppState,jdbcType=VARCHAR},
+      PP_NAME = #{ppName,jdbcType=VARCHAR},
+      PP_BIRTH = #{ppBirth,jdbcType=TIMESTAMP},
+      PP_SEX = #{ppSex,jdbcType=VARCHAR},
+      PP_ADDS = #{ppAdds,jdbcType=VARCHAR},
+      PP_PHONE = #{ppPhone,jdbcType=VARCHAR},
+      PP_SHENFENZHENG = #{ppShenfenzheng,jdbcType=VARCHAR},
+      SP_ID = #{spId,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=VARCHAR},
+      DEPT_ID = #{deptId,jdbcType=VARCHAR},
+      PP_PIC = #{ppPic,jdbcType=VARCHAR}
+    where PP_ID = #{ppId,jdbcType=VARCHAR}
+  </update>
+</mapper>

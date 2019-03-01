@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.turing.manage.mapper.TopicMapper" >
+  <resultMap id="BaseResultMap" type="com.turing.manage.entity.Topic" >
+    <id column="TOPIC_ID" property="topicId" jdbcType="VARCHAR" />
+    <result column="SUBJECT_ID" property="subjectId" jdbcType="VARCHAR" />
+    <result column="TOPIC_NAME" property="topicName" jdbcType="VARCHAR" />
+    <result column="TOPIC_ANSWER_A" property="topicAnswerA" jdbcType="VARCHAR" />
+    <result column="TOPIC_ANSWER_B" property="topicAnswerB" jdbcType="VARCHAR" />
+    <result column="TOPIC_ANSWER_C" property="topicAnswerC" jdbcType="VARCHAR" />
+    <result column="TOPIC_ANSWER_D" property="topicAnswerD" jdbcType="VARCHAR" />
+    <result column="TOPIC_ANSWER_TRUE" property="topicAnswerTrue" jdbcType="VARCHAR" />
+    <result column="TOPIC_STATE" property="topicState" jdbcType="DECIMAL" />
+     <result column="SUBJECT_NAME" property="subjectName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TOPIC_ID, SUBJECT_ID, TOPIC_NAME, TOPIC_ANSWER_A, TOPIC_ANSWER_B, TOPIC_ANSWER_C, 
+    TOPIC_ANSWER_D, TOPIC_ANSWER_TRUE, TOPIC_STATE
+  </sql>
+   <!-- 验证仓库是否能删除 -->
+  <select id="deleteYanzheng" resultType="int" parameterType="string">
+  	select sum(ge) from (
+  		select count(*)ge from SUBJECT where subject_id=#{value}
+  	)ls
+  </select>
+  <select id="queryAll" resultMap="BaseResultMap" parameterType="com.turing.manage.entity.Topic">
+  	select topic_id, t.subject_id, topic_name, topic_answer_a, topic_answer_b, topic_answer_c, topic_answer_d, topic_answer_true, topic_state 
+    ,s.subject_name from topic t left join subject s on t.subject_id=s.subject_id
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from NETEXAM.TOPIC
+    where TOPIC_ID = #{topicId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from NETEXAM.TOPIC
+    where TOPIC_ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.manage.entity.Topic" >
+    insert into NETEXAM.TOPIC (TOPIC_ID, SUBJECT_ID, TOPIC_NAME, 
+      TOPIC_ANSWER_A, TOPIC_ANSWER_B, TOPIC_ANSWER_C, 
+      TOPIC_ANSWER_D, TOPIC_ANSWER_TRUE, TOPIC_STATE
+      )
+    values (#{topicId,jdbcType=VARCHAR}, #{subjectId,jdbcType=VARCHAR}, #{topicName,jdbcType=VARCHAR}, 
+      #{topicAnswerA,jdbcType=VARCHAR}, #{topicAnswerB,jdbcType=VARCHAR}, #{topicAnswerC,jdbcType=VARCHAR}, 
+      #{topicAnswerD,jdbcType=VARCHAR}, #{topicAnswerTrue,jdbcType=VARCHAR}, #{topicState,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.manage.entity.Topic" >
+    insert into NETEXAM.TOPIC
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="topicId != null" >
+        TOPIC_ID,
+      </if>
+      <if test="subjectId != null" >
+        SUBJECT_ID,
+      </if>
+      <if test="topicName != null" >
+        TOPIC_NAME,
+      </if>
+      <if test="topicAnswerA != null" >
+        TOPIC_ANSWER_A,
+      </if>
+      <if test="topicAnswerB != null" >
+        TOPIC_ANSWER_B,
+      </if>
+      <if test="topicAnswerC != null" >
+        TOPIC_ANSWER_C,
+      </if>
+      <if test="topicAnswerD != null" >
+        TOPIC_ANSWER_D,
+      </if>
+      <if test="topicAnswerTrue != null" >
+        TOPIC_ANSWER_TRUE,
+      </if>
+      <if test="topicState != null" >
+        TOPIC_STATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="topicId != null" >
+        #{topicId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="topicName != null" >
+        #{topicName,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerA != null" >
+        #{topicAnswerA,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerB != null" >
+        #{topicAnswerB,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerC != null" >
+        #{topicAnswerC,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerD != null" >
+        #{topicAnswerD,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerTrue != null" >
+        #{topicAnswerTrue,jdbcType=VARCHAR},
+      </if>
+      <if test="topicState != null" >
+        #{topicState,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.manage.entity.Topic" >
+    update NETEXAM.TOPIC
+    <set >
+      <if test="subjectId != null" >
+        SUBJECT_ID = #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="topicName != null" >
+        TOPIC_NAME = #{topicName,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerA != null" >
+        TOPIC_ANSWER_A = #{topicAnswerA,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerB != null" >
+        TOPIC_ANSWER_B = #{topicAnswerB,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerC != null" >
+        TOPIC_ANSWER_C = #{topicAnswerC,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerD != null" >
+        TOPIC_ANSWER_D = #{topicAnswerD,jdbcType=VARCHAR},
+      </if>
+      <if test="topicAnswerTrue != null" >
+        TOPIC_ANSWER_TRUE = #{topicAnswerTrue,jdbcType=VARCHAR},
+      </if>
+      <if test="topicState != null" >
+        TOPIC_STATE = #{topicState,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where TOPIC_ID = #{topicId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.manage.entity.Topic" >
+    update NETEXAM.TOPIC
+    set SUBJECT_ID = #{subjectId,jdbcType=VARCHAR},
+      TOPIC_NAME = #{topicName,jdbcType=VARCHAR},
+      TOPIC_ANSWER_A = #{topicAnswerA,jdbcType=VARCHAR},
+      TOPIC_ANSWER_B = #{topicAnswerB,jdbcType=VARCHAR},
+      TOPIC_ANSWER_C = #{topicAnswerC,jdbcType=VARCHAR},
+      TOPIC_ANSWER_D = #{topicAnswerD,jdbcType=VARCHAR},
+      TOPIC_ANSWER_TRUE = #{topicAnswerTrue,jdbcType=VARCHAR},
+      TOPIC_STATE = #{topicState,jdbcType=DECIMAL}
+    where TOPIC_ID = #{topicId,jdbcType=VARCHAR}
+  </update>
+</mapper>

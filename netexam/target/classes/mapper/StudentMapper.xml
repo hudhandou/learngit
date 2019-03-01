@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.student.mapper.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.turing.student.entity.Student">
+    <id column="STUDENT_ID" jdbcType="VARCHAR" property="studentId" />
+    <result column="STUDENT_NAME" jdbcType="VARCHAR" property="studentName" />
+    <result column="CLASS_ID" jdbcType="VARCHAR" property="classId" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="ROW_ID" jdbcType="VARCHAR" property="rowId" />
+    <result column="STUDENT_TEL" jdbcType="VARCHAR" property="studentAccount" />
+	<result column="STUDENT_ACCOUNT" jdbcType="VARCHAR" property="studentAccount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    STUDENT_ID, CLASS_ID, STUDENT_NAME, STUDENT_TEL, USER_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+     from STUDENT  
+     where STUDENT_ID = #{studentId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from STUDENT
+    where STUDENT_ID = #{studentId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.student.entity.Student">
+   insert into STUDENT (STUDENT_ID, CLASS_ID, STUDENT_NAME, 
+      STUDENT_TEL, USER_ID)
+      values (#{studentId,jdbcType=VARCHAR}, #{classId,jdbcType=VARCHAR}, #{studentName,jdbcType=VARCHAR}, 
+      #{studentTel,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.student.entity.Student" >
+    insert into STUDENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="studentId != null" >
+        STUDENT_ID,
+      </if>
+      <if test="classId != null" >
+        CLASS_ID,
+      </if>
+      <if test="studentName != null" >
+        STUDENT_NAME,
+      </if>
+      <if test="studentTel != null" >
+        STUDENT_TEL,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="studentTel != null" >
+        #{studentTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.student.entity.Student" >
+    update STUDENT
+    <set >
+      <if test="classId != null" >
+        CLASS_ID = #{classId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentName != null" >
+        STUDENT_NAME = #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="studentTel != null" >
+        STUDENT_TEL = #{studentTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where STUDENT_ID = #{studentId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.student.entity.Student" >
+    update STUDENT
+    set CLASS_ID = #{classId,jdbcType=VARCHAR},
+      STUDENT_NAME = #{studentName,jdbcType=VARCHAR},
+      STUDENT_TEL = #{studentTel,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=VARCHAR}
+    where STUDENT_ID = #{studentId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.turing.manage.mapper.ClasssMapper" >
+  <resultMap id="BaseResultMap" type="com.turing.manage.entity.Classs" >
+    <id column="CLASS_ID" property="classId" jdbcType="VARCHAR" />
+    <result column="CLASS_NAME" property="className" jdbcType="VARCHAR" />
+    <result column="CLASS_STATE" property="classState" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CLASS_ID, CLASS_NAME, CLASS_STATE, CREATE_DATE
+  </sql>
+    <!-- 验证仓库是否能删除 -->
+  <select id="deleteYanzheng" resultType="int" parameterType="string">
+  	select sum(ge) from (
+  		select count(*)ge from STUDENT where class_id=#{value}
+  	)ls
+  </select>
+  <select id="queryAll" resultMap="BaseResultMap"  parameterType="com.turing.manage.entity.Classs">
+  		select class_id, class_name, class_state, create_date from classs
+  		<where>
+  			<if test="className!=null and className!='' ">
+  			   and class_name like concat('%',concat(trim(#{className}),'%'))
+  			</if>
+  		</where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from CLASSS
+    where CLASS_ID = #{classId,jdbcType=VARCHAR}
+  </select>
+  <!-- 改变当前状态 -->
+   <update id="updateAll" parameterType="com.turing.manage.entity.Classs" >
+       update CLASSS
+       set   
+       CLASS_STATE = #{classState,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from CLASSS
+    where CLASS_ID = #{classId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.manage.entity.Classs" >
+    insert into CLASSS (CLASS_ID, CLASS_NAME, CLASS_STATE, 
+      CREATE_DATE)
+    values (#{classId,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{classState,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.manage.entity.Classs" >
+    insert into CLASSS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        CLASS_ID,
+      </if>
+      <if test="className != null" >
+        CLASS_NAME,
+      </if>
+      <if test="classState != null" >
+        CLASS_STATE,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        #{classId,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classState != null" >
+        #{classState,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelectiveFei" parameterType="com.turing.manage.entity.Classs" >
+    update NETEXAM.CLASSS
+    <set >
+      <if test="className != null" >
+        CLASS_NAME = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classState != null" >
+        CLASS_STATE = #{classState,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.manage.entity.Classs" >
+    update CLASSS
+    <set >
+      <if test="className != null" >
+        CLASS_NAME = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classState != null" >
+        CLASS_STATE = #{classState,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where CLASS_ID = #{classId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.manage.entity.Classs" >
+    update CLASSS
+    set CLASS_NAME = #{className,jdbcType=VARCHAR},
+      CLASS_STATE = #{classState,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    where CLASS_ID = #{classId,jdbcType=VARCHAR}
+  </update>
+</mapper>

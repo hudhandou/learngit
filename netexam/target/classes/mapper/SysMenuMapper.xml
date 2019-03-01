@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.system.mapper.SysMenuMapper">
+  <resultMap id="BaseResultMap" type="com.turing.system.entity.SysMenu">
+    <id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+    <result column="MENU_URL" jdbcType="VARCHAR" property="menuUrl" />
+    <result column="MENU_NAME" jdbcType="VARCHAR" property="menuName" />
+    <result column="MENU_ISLINK" jdbcType="VARCHAR" property="menuIslink" />
+    <result column="MENU_SEQU" jdbcType="DECIMAL" property="menuSequ" />
+    <result column="MENU_PARE" jdbcType="VARCHAR" property="menuPare" />
+    <result column="MENU_STATE" jdbcType="VARCHAR" property="menuState" />
+    <result column="MENU_INFO" jdbcType="VARCHAR" property="menuInfo" />
+    <result column="MENU_ICO" jdbcType="VARCHAR" property="menuIco" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+  </resultMap>
+  <resultMap type="com.turing.framework.select.SelectOptions" id="SelectOptionsMenu">
+  	<id column="MENU_ID" jdbcType="VARCHAR" property="key" />
+  	<result column="MENU_NAME" jdbcType="VARCHAR" property="value" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MENU_ID, MENU_URL, MENU_NAME, MENU_ISLINK, MENU_SEQU, MENU_PARE, MENU_STATE, MENU_INFO, 
+    MENU_ICO
+  </sql>
+  <sql id="SM_Column_List">
+  	sm.menu_id,sm.menu_url,sm.menu_name,sm.menu_islink,sm.menu_sequ,sm.menu_pare,sm.menu_state,sm.menu_info,
+  	sm.menu_ico
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_MENU
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </select>
+  <select id="queryAllMenuByTop" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_MENU
+    where MENU_ISLINK = '1'
+    order by MENU_SEQU
+  </select>
+  <select id="queryAllMenuByTopWithOptions" resultMap="SelectOptionsMenu">
+  	select 
+    menu_id,menu_name
+    from SYS_MENU
+    where MENU_ISLINK = '1'
+    order by MENU_SEQU
+  </select>
+  <select id="queryAllMenuByOne" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_MENU
+    where MENU_PARE = #{menuId,jdbcType=VARCHAR}
+    order by MENU_SEQU
+  </select>
+  <select id="queryMenuByTop"  parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select distinct
+  	<include refid="SM_Column_List"/> ,su.user_id
+	from sys_menu sm 
+	left join sys_role_menu srm on sm.menu_id = srm.menu_id
+	left join sys_role sr on srm.role_id = sr.role_id
+	left join sys_user_role sur on sur.role_id = sr.role_id
+	left join sys_user su on sur.user_id = su.user_id
+	where su.user_id = #{userId,jdbcType=VARCHAR} and sm.menu_islink = '1'
+	order by sm.menu_sequ
+  </select>
+  <select id="queryMenuByOne" parameterType="com.turing.system.entity.SysMenu" resultMap="BaseResultMap">
+  	select distinct
+  	<include refid="SM_Column_List"/> 
+	from sys_menu sm 
+	left join sys_role_menu srm on sm.menu_id = srm.menu_id
+	left join sys_role sr on srm.role_id = sr.role_id
+	left join sys_user_role sur on sur.role_id = sr.role_id
+	left join sys_user su on sur.user_id = su.user_id
+	where 1=1 
+	<if test="menuId!=null">
+		and sm.menu_pare = #{menuId,jdbcType=VARCHAR}
+	</if>
+	<if test="userId!=null">
+		and su.user_id = #{userId,jdbcType=VARCHAR}
+	</if>
+	order by sm.menu_sequ
+  </select>
+  <select id="queryMenuByOneWithOptions" parameterType="com.turing.framework.select.SelectOptions" resultMap="SelectOptionsMenu">
+  select distinct sm.menu_id,sm.menu_name,sm.menu_sequ
+	from sys_menu sm 
+	left join sys_role_menu srm on sm.menu_id = srm.menu_id
+	left join sys_role sr on srm.role_id = sr.role_id
+	left join sys_user_role sur on sur.role_id = sr.role_id
+	left join sys_user su on sur.user_id = su.user_id
+	where 1=1 
+	<if test="key!=null">
+		and sm.menu_pare = #{key,jdbcType=VARCHAR}
+	</if>
+	order by sm.menu_sequ
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_MENU
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.system.entity.SysMenu">
+    insert into SYS_MENU (MENU_ID, MENU_URL, MENU_NAME, 
+      MENU_ISLINK, MENU_SEQU, MENU_PARE, 
+      MENU_STATE, MENU_INFO, MENU_ICO
+      )
+    values (#{menuId,jdbcType=VARCHAR}, #{menuUrl,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, 
+      #{menuIslink,jdbcType=VARCHAR}, #{menuSequ,jdbcType=DECIMAL}, #{menuPare,jdbcType=VARCHAR}, 
+      #{menuState,jdbcType=VARCHAR}, #{menuInfo,jdbcType=VARCHAR}, #{menuIco,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.system.entity.SysMenu">
+    insert into SYS_MENU
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="menuId != null">
+        MENU_ID,
+      </if>
+      <if test="menuUrl != null">
+        MENU_URL,
+      </if>
+      <if test="menuName != null">
+        MENU_NAME,
+      </if>
+      <if test="menuIslink != null">
+        MENU_ISLINK,
+      </if>
+      <if test="menuSequ != null">
+        MENU_SEQU,
+      </if>
+      <if test="menuPare != null">
+        MENU_PARE,
+      </if>
+      <if test="menuState != null">
+        MENU_STATE,
+      </if>
+      <if test="menuInfo != null">
+        MENU_INFO,
+      </if>
+      <if test="menuIco != null">
+        MENU_ICO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="menuId != null">
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null">
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIslink != null">
+        #{menuIslink,jdbcType=VARCHAR},
+      </if>
+      <if test="menuSequ != null">
+        #{menuSequ,jdbcType=DECIMAL},
+      </if>
+      <if test="menuPare != null">
+        #{menuPare,jdbcType=VARCHAR},
+      </if>
+      <if test="menuState != null">
+        #{menuState,jdbcType=VARCHAR},
+      </if>
+      <if test="menuInfo != null">
+        #{menuInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIco != null">
+        #{menuIco,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.system.entity.SysMenu">
+    update SYS_MENU
+    <set>
+      <if test="menuUrl != null">
+        MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIslink != null">
+        MENU_ISLINK = #{menuIslink,jdbcType=VARCHAR},
+      </if>
+      <if test="menuSequ != null">
+        MENU_SEQU = #{menuSequ,jdbcType=DECIMAL},
+      </if>
+      <if test="menuPare != null">
+        MENU_PARE = #{menuPare,jdbcType=VARCHAR},
+      </if>
+      <if test="menuState != null">
+        MENU_STATE = #{menuState,jdbcType=VARCHAR},
+      </if>
+      <if test="menuInfo != null">
+        MENU_INFO = #{menuInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIco != null">
+        MENU_ICO = #{menuIco,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.system.entity.SysMenu">
+    update SYS_MENU
+    set MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+      MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      MENU_ISLINK = #{menuIslink,jdbcType=VARCHAR},
+      MENU_SEQU = #{menuSequ,jdbcType=DECIMAL},
+      MENU_PARE = #{menuPare,jdbcType=VARCHAR},
+      MENU_STATE = #{menuState,jdbcType=VARCHAR},
+      MENU_INFO = #{menuInfo,jdbcType=VARCHAR},
+      MENU_ICO = #{menuIco,jdbcType=VARCHAR}
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </update>
+</mapper>

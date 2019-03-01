@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.turing.manage.mapper.PaperMapper" >
+  <resultMap id="BaseResultMap" type="com.turing.manage.entity.Paper" >
+    <id column="PAPER_ID" property="paperId" jdbcType="VARCHAR" />
+    <result column="PAPER_NAME" property="paperName" jdbcType="VARCHAR" />
+    <result column="PAPER_CREATETIME" property="paperCreatetime" jdbcType="TIMESTAMP" />
+    <result column="PAPER_NEEDTIME" property="paperNeedtime" jdbcType="DECIMAL" />
+    <result column="PAPER_SCORE" property="paperScore" jdbcType="DECIMAL" />
+    <result column="PAPER_STATE" property="paperState" jdbcType="VARCHAR" />
+    <result column="PAPER_TMSL" property="paperTmsl" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PAPER_ID, PAPER_NAME, PAPER_CREATETIME, PAPER_NEEDTIME, PAPER_SCORE, PAPER_STATE, 
+    PAPER_TMSL
+  </sql>
+  <select id="queryStudentPaper" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from NETEXAM.PAPER
+    where paper_state = '1'
+  </select>
+  <select id="queryAll" resultMap="BaseResultMap" parameterType="com.turing.manage.entity.Paper" >
+    select 
+    <include refid="Base_Column_List" />
+    from NETEXAM.PAPER
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from NETEXAM.PAPER
+    where PAPER_ID = #{paperId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from NETEXAM.PAPER
+    where PAPER_ID = #{paperId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.manage.entity.Paper" >
+    insert into NETEXAM.PAPER (PAPER_ID, PAPER_NAME, PAPER_CREATETIME, 
+      PAPER_NEEDTIME, PAPER_SCORE, PAPER_STATE, 
+      PAPER_TMSL)
+    values (#{paperId,jdbcType=VARCHAR}, #{paperName,jdbcType=VARCHAR}, #{paperCreatetime,jdbcType=TIMESTAMP}, 
+      #{paperNeedtime,jdbcType=DECIMAL}, #{paperScore,jdbcType=DECIMAL}, #{paperState,jdbcType=VARCHAR}, 
+      #{paperTmsl,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.manage.entity.Paper" >
+    insert into NETEXAM.PAPER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="paperId != null" >
+        PAPER_ID,
+      </if>
+      <if test="paperName != null" >
+        PAPER_NAME,
+      </if>
+      <if test="paperCreatetime != null" >
+        PAPER_CREATETIME,
+      </if>
+      <if test="paperNeedtime != null" >
+        PAPER_NEEDTIME,
+      </if>
+      <if test="paperScore != null" >
+        PAPER_SCORE,
+      </if>
+      <if test="paperState != null" >
+        PAPER_STATE,
+      </if>
+      <if test="paperTmsl != null" >
+        PAPER_TMSL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="paperId != null" >
+        #{paperId,jdbcType=VARCHAR},
+      </if>
+      <if test="paperName != null" >
+        #{paperName,jdbcType=VARCHAR},
+      </if>
+      <if test="paperCreatetime != null" >
+        #{paperCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paperNeedtime != null" >
+        #{paperNeedtime,jdbcType=DECIMAL},
+      </if>
+      <if test="paperScore != null" >
+        #{paperScore,jdbcType=DECIMAL},
+      </if>
+      <if test="paperState != null" >
+        #{paperState,jdbcType=VARCHAR},
+      </if>
+      <if test="paperTmsl != null" >
+        #{paperTmsl,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.manage.entity.Paper" >
+    update NETEXAM.PAPER
+    <set >
+      <if test="paperName != null" >
+        PAPER_NAME = #{paperName,jdbcType=VARCHAR},
+      </if>
+      <if test="paperCreatetime != null" >
+        PAPER_CREATETIME = #{paperCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paperNeedtime != null" >
+        PAPER_NEEDTIME = #{paperNeedtime,jdbcType=DECIMAL},
+      </if>
+      <if test="paperScore != null" >
+        PAPER_SCORE = #{paperScore,jdbcType=DECIMAL},
+      </if>
+      <if test="paperState != null" >
+        PAPER_STATE = #{paperState,jdbcType=VARCHAR},
+      </if>
+      <if test="paperTmsl != null" >
+        PAPER_TMSL = #{paperTmsl,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where PAPER_ID = #{paperId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.manage.entity.Paper" >
+    update NETEXAM.PAPER
+    set PAPER_NAME = #{paperName,jdbcType=VARCHAR},
+      PAPER_CREATETIME = #{paperCreatetime,jdbcType=TIMESTAMP},
+      PAPER_NEEDTIME = #{paperNeedtime,jdbcType=DECIMAL},
+      PAPER_SCORE = #{paperScore,jdbcType=DECIMAL},
+      PAPER_STATE = #{paperState,jdbcType=VARCHAR},
+      PAPER_TMSL = #{paperTmsl,jdbcType=DECIMAL}
+    where PAPER_ID = #{paperId,jdbcType=VARCHAR}
+  </update>
+</mapper>

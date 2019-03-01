@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.system.mapper.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.turing.system.entity.SysRole">
+    <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+    <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+    <result column="ROLE_STATE" jdbcType="VARCHAR" property="roleState" />
+    <result column="ROLE_INFO" jdbcType="VARCHAR" property="roleInfo" />
+  </resultMap>
+  <resultMap type="com.turing.framework.select.SelectOptions" id="SelectOptionsRole">
+  	<id column="ROLE_ID" jdbcType="VARCHAR" property="key" />
+  	<result column="ROLE_NAME" jdbcType="VARCHAR" property="value" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ROLE_ID, ROLE_NAME, ROLE_STATE, ROLE_INFO
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ROLE
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </select>
+  <select id="queryAllRoleWithOptions" resultMap="SelectOptionsRole">
+  	select role_id,role_name from sys_role
+  </select>
+  <select id="queryRoleByUserWithOptions" parameterType="java.lang.String" resultMap="SelectOptionsRole">
+  	select sr.role_id,sr.role_name from sys_role sr
+  	left join sys_user_role sur on sr.role_id = sur.role_id
+  	where sur.user_id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_ROLE
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.system.entity.SysRole">
+    insert into SYS_ROLE (ROLE_ID, ROLE_NAME, ROLE_STATE, 
+      ROLE_INFO)
+    values (#{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleState,jdbcType=VARCHAR}, 
+      #{roleInfo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.system.entity.SysRole">
+    insert into SYS_ROLE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="roleName != null">
+        ROLE_NAME,
+      </if>
+      <if test="roleState != null">
+        ROLE_STATE,
+      </if>
+      <if test="roleInfo != null">
+        ROLE_INFO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleState != null">
+        #{roleState,jdbcType=VARCHAR},
+      </if>
+      <if test="roleInfo != null">
+        #{roleInfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.system.entity.SysRole">
+    update SYS_ROLE
+    <set>
+      <if test="roleName != null">
+        ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleState != null">
+        ROLE_STATE = #{roleState,jdbcType=VARCHAR},
+      </if>
+      <if test="roleInfo != null">
+        ROLE_INFO = #{roleInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.system.entity.SysRole">
+    update SYS_ROLE
+    set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      ROLE_STATE = #{roleState,jdbcType=VARCHAR},
+      ROLE_INFO = #{roleInfo,jdbcType=VARCHAR}
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

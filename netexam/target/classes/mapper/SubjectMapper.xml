@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.turing.manage.mapper.SubjectMapper" >
+  <resultMap id="BaseResultMap" type="com.turing.manage.entity.Subject" >
+    <id column="SUBJECT_ID" property="subjectId" jdbcType="VARCHAR" />
+    <result column="SUBJECT_NAME" property="subjectName" jdbcType="VARCHAR" />
+    <result column="SUBJECT_PID" property="subjectPid" jdbcType="VARCHAR" />
+    <result column="SORDER" property="sorder" jdbcType="DECIMAL" />
+    <result column="BIGNAME" property="bigname"  />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SUBJECT_ID, SUBJECT_NAME, SUBJECT_PID, SORDER
+  </sql>
+  <select id="querysujectByPid" resultMap="BaseResultMap"  >
+	select subject_id, subject_name, sorder, subject_pid from subject where subject_pid=#{param1} order by sorder
+  </select>
+  <select id="queryAllBysubject2" resultMap="BaseResultMap" >
+	select subject_id, subject_name from subject where subject_pid != '1'
+  </select>
+  <select id="queryAllBysubject" resultMap="BaseResultMap" >
+     select sj.subject_name bigname , ls.* from (
+	 select subject_id, subject_name, subject_pid, sorder from subject where subject_pid != '1'
+	 )ls left join subject sj on ls.subject_pid = sj.subject_id 
+	<where>
+	<if test=" subjectName !=null and subjectName !='' ">
+     and ls.subject_name = #{subjectName}
+     </if>
+	</where>
+  </select>
+  <select id="queryAllBig" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from SUBJECT
+     where SUBJECT_PID = '1'
+  </select>
+    <select id="query" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from NETEXAM.SUBJECT
+  </select>
+  <select id="queryAll" resultMap="BaseResultMap" parameterType="com.turing.manage.entity.Subject" >
+    select 
+    <include refid="Base_Column_List" />
+    from NETEXAM.SUBJECT 
+     <where>
+     <if test=" subjectName !=null and subjectName !='' ">
+     and SUBJECT_NAME = #{subjectName}
+     </if>
+     <if test="true">
+     and SUBJECT_PID = '1'
+     </if>
+     </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from NETEXAM.SUBJECT
+    where SUBJECT_ID = #{subjectId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from NETEXAM.SUBJECT
+    where SUBJECT_ID = #{subjectId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.manage.entity.Subject" >
+    insert into NETEXAM.SUBJECT (SUBJECT_ID, SUBJECT_NAME, SUBJECT_PID, 
+      SORDER)
+    values (#{subjectId,jdbcType=VARCHAR}, #{subjectName,jdbcType=VARCHAR}, #{subjectPid,jdbcType=VARCHAR}, 
+      #{sorder,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.manage.entity.Subject" >
+    insert into NETEXAM.SUBJECT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="subjectId != null" >
+        SUBJECT_ID,
+      </if>
+      <if test="subjectName != null" >
+        SUBJECT_NAME,
+      </if>
+      <if test="subjectPid != null" >
+        SUBJECT_PID,
+      </if>
+      <if test="sorder != null" >
+        SORDER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null" >
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectPid != null" >
+        #{subjectPid,jdbcType=VARCHAR},
+      </if>
+      <if test="sorder != null" >
+        #{sorder,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.manage.entity.Subject" >
+    update NETEXAM.SUBJECT
+    <set >
+      <if test="subjectName != null" >
+        SUBJECT_NAME = #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectPid != null" >
+        SUBJECT_PID = #{subjectPid,jdbcType=VARCHAR},
+      </if>
+      <if test="sorder != null" >
+        SORDER = #{sorder,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where SUBJECT_ID = #{subjectId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.manage.entity.Subject" >
+    update NETEXAM.SUBJECT
+    set SUBJECT_NAME = #{subjectName,jdbcType=VARCHAR},
+      SUBJECT_PID = #{subjectPid,jdbcType=VARCHAR},
+      SORDER = #{sorder,jdbcType=DECIMAL}
+    where SUBJECT_ID = #{subjectId,jdbcType=VARCHAR}
+  </update>
+</mapper>

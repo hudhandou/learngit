@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.system.mapper.SysPostMapper">
+  <resultMap id="BaseResultMap" type="com.turing.system.entity.SysPost">
+    <id column="SP_ID" jdbcType="VARCHAR" property="spId" />
+    <result column="SP_NAME" jdbcType="VARCHAR" property="spName" />
+    <result column="SP_INFO" jdbcType="VARCHAR" property="spInfo" />
+    <result column="DEPT_ID" jdbcType="VARCHAR" property="deptId" />
+    <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SP_ID, SP_NAME, SP_INFO, DEPT_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_POST
+    where SP_ID = #{spId,jdbcType=VARCHAR}
+  </select>
+  <select id="selective" parameterType="com.turing.system.entity.SysPost" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_POST
+    where 1=1
+    <if test="spName != null">
+        and SP_NAME like #{spName,jdbcType=VARCHAR}
+      </if>
+      <if test="spInfo != null">
+       and SP_INFO like #{spInfo,jdbcType=VARCHAR}
+      </if>
+      <if test="deptId != null">
+        and DEPT_ID = #{deptId,jdbcType=VARCHAR}
+      </if>
+      <if test="spId != null">
+        and SP_ID = #{spId,jdbcType=VARCHAR}
+      </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_POST
+    where SP_ID = #{spId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.system.entity.SysPost">
+    insert into SYS_POST (SP_ID, SP_NAME, SP_INFO, 
+      DEPT_ID)
+    values (#{spId,jdbcType=VARCHAR}, #{spName,jdbcType=VARCHAR}, #{spInfo,jdbcType=VARCHAR}, 
+      #{deptId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.system.entity.SysPost">
+    insert into SYS_POST
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="spId != null">
+        SP_ID,
+      </if>
+      <if test="spName != null">
+        SP_NAME,
+      </if>
+      <if test="spInfo != null">
+        SP_INFO,
+      </if>
+      <if test="deptId != null">
+        DEPT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="spId != null">
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="spName != null">
+        #{spName,jdbcType=VARCHAR},
+      </if>
+      <if test="spInfo != null">
+        #{spInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.system.entity.SysPost">
+    update SYS_POST
+    <set>
+      <if test="spName != null">
+        SP_NAME = #{spName,jdbcType=VARCHAR},
+      </if>
+      <if test="spInfo != null">
+        SP_INFO = #{spInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        DEPT_ID = #{deptId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SP_ID = #{spId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.system.entity.SysPost">
+    update SYS_POST
+    set SP_NAME = #{spName,jdbcType=VARCHAR},
+      SP_INFO = #{spInfo,jdbcType=VARCHAR},
+      DEPT_ID = #{deptId,jdbcType=VARCHAR}
+    where SP_ID = #{spId,jdbcType=VARCHAR}
+  </update>
+</mapper>

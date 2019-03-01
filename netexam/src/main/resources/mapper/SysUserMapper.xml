@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.system.mapper.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.turing.system.entity.SysUser">
+    <id column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="USER_PASS" jdbcType="VARCHAR" property="userPass" />
+    <result column="NICK_NAME" jdbcType="VARCHAR" property="nickName" />
+    <result column="USER_STATE" jdbcType="VARCHAR" property="userState" />
+    <result column="USER_INFO" jdbcType="VARCHAR" property="userInfo" />
+    <result column="USER_SEQU" jdbcType="DECIMAL" property="userSequ" />
+    <result column="PP_ID" jdbcType="VARCHAR" property="sysPersonId" />
+    <result column="PP_NAME" jdbcType="VARCHAR" property="sysPersonName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    USER_ID, USER_NAME, USER_PASS, NICK_NAME, USER_STATE, USER_INFO, USER_SEQU
+  </sql>
+  <sql id="SuSp_Column_List">
+  	su.user_id,su.user_name,su.user_pass,su.nick_name,su.user_state,su.user_info,su.user_sequ
+  </sql>
+  <select id="getRoleNameByUserId" resultMap="BaseResultMap" parameterType="com.turing.system.entity.SysUser">
+  	select  role_name from sys_role
+    where role_id in (select role_id from sys_user_role where user_id=#{param1})
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_USER
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectiveWithPerson" parameterType="com.turing.system.entity.SysUser" resultMap="BaseResultMap">
+  	select 
+    <include refid="SuSp_Column_List" />
+    from sys_user su
+    where 1=1
+    <if test="userId != null" >
+       and su.user_id = #{userId,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null" >
+       and su.user_name like #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="userPass != null" >
+       and su.user_pass = #{userPass,jdbcType=VARCHAR}
+    </if>
+    <if test="nickName != null" >
+       and su.nick_name like #{nickName,jdbcType=VARCHAR}
+    </if>
+    <if test="userState != null" >
+       and su.user_state = #{userState,jdbcType=VARCHAR}
+    </if>
+    <if test="userInfo != null" >
+       and su.user_info = #{userInfo,jdbcType=VARCHAR}
+    </if>
+    <if test="userSequ != null" >
+       and su.user_sequ = #{userSequ,jdbcType=VARCHAR}
+    </if>
+<!--     <if test="sysPersonId != null" > -->
+<!--        and sp.pp_id = #{sysPersonId,jdbcType=VARCHAR} -->
+<!--     </if> -->
+<!--     <if test="sysPersonName != null" > -->
+<!--        and sp.pp_name like #{sysPersonName,jdbcType=VARCHAR} -->
+<!--     </if> -->
+  </select>
+  <select id="selectNotInIds" parameterType="java.util.List" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_USER
+    <if test="list!=null">
+    	where USER_ID not in(
+    	<foreach collection="list" item="t" separator=",">
+    		#{t}
+    	</foreach>
+    	)
+    </if>
+    
+  </select>
+  <select id="selective" parameterType="com.turing.system.entity.SysUser" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_USER
+    where 1=1
+    <if test="userId != null" >
+       and user_id = #{userId,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null" >
+       and user_name like #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="userPass != null" >
+       and user_pass = #{userPass,jdbcType=VARCHAR}
+    </if>
+    <if test="nickName != null" >
+       and nick_name like #{nickName,jdbcType=VARCHAR}
+    </if>
+    <if test="userState != null" >
+       and user_state = #{userState,jdbcType=VARCHAR}
+    </if>
+    <if test="userInfo != null" >
+       and user_info = #{userInfo,jdbcType=VARCHAR}
+    </if>
+    <if test="userSequ != null" >
+       and user_sequ = #{userSequ,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_USER
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.system.entity.SysUser">
+    insert into SYS_USER (USER_ID, USER_NAME, USER_PASS, 
+      NICK_NAME, USER_STATE, USER_INFO, 
+      USER_SEQU)
+    values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR}, 
+      #{nickName,jdbcType=VARCHAR}, #{userState,jdbcType=VARCHAR}, #{userInfo,jdbcType=VARCHAR}, 
+      #{userSequ,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.system.entity.SysUser">
+    insert into SYS_USER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="userPass != null">
+        USER_PASS,
+      </if>
+      <if test="nickName != null">
+        NICK_NAME,
+      </if>
+      <if test="userState != null">
+        USER_STATE,
+      </if>
+      <if test="userInfo != null">
+        USER_INFO,
+      </if>
+      <if test="userSequ != null">
+        USER_SEQU,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPass != null">
+        #{userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userState != null">
+        #{userState,jdbcType=VARCHAR},
+      </if>
+      <if test="userInfo != null">
+        #{userInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="userSequ != null">
+        #{userSequ,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.system.entity.SysUser">
+    update SYS_USER
+    <set>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPass != null">
+        USER_PASS = #{userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        NICK_NAME = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userState != null">
+        USER_STATE = #{userState,jdbcType=VARCHAR},
+      </if>
+      <if test="userInfo != null">
+        USER_INFO = #{userInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="userSequ != null">
+        USER_SEQU = #{userSequ,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.system.entity.SysUser">
+    update SYS_USER
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      USER_PASS = #{userPass,jdbcType=VARCHAR},
+      NICK_NAME = #{nickName,jdbcType=VARCHAR},
+      USER_STATE = #{userState,jdbcType=VARCHAR},
+      USER_INFO = #{userInfo,jdbcType=VARCHAR},
+      USER_SEQU = #{userSequ,jdbcType=DECIMAL}
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>

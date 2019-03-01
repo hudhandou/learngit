@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.system.mapper.SysRoleMenuMapper">
+  <resultMap id="BaseResultMap" type="com.turing.system.entity.SysRoleMenu">
+    <id column="RMID" jdbcType="VARCHAR" property="rmid" />
+    <result column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+    <result column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    RMID, MENU_ID, ROLE_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ROLE_MENU
+    where RMID = #{rmid,jdbcType=VARCHAR}
+  </select>
+  <select id="queryMenuByRoleId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_ROLE_MENU
+    where ROLE_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_ROLE_MENU
+    where RMID = #{rmid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByRoleId" parameterType="java.lang.String">
+  	delete from SYS_ROLE_MENU
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.system.entity.SysRoleMenu">
+    insert into SYS_ROLE_MENU (RMID, MENU_ID, ROLE_ID
+      )
+    values (#{rmid,jdbcType=VARCHAR}, #{menuId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.system.entity.SysRoleMenu">
+    insert into SYS_ROLE_MENU
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rmid != null">
+        RMID,
+      </if>
+      <if test="menuId != null">
+        MENU_ID,
+      </if>
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rmid != null">
+        #{rmid,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null">
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.system.entity.SysRoleMenu">
+    update SYS_ROLE_MENU
+    <set>
+      <if test="menuId != null">
+        MENU_ID = #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        ROLE_ID = #{roleId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RMID = #{rmid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.system.entity.SysRoleMenu">
+    update SYS_ROLE_MENU
+    set MENU_ID = #{menuId,jdbcType=VARCHAR},
+      ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    where RMID = #{rmid,jdbcType=VARCHAR}
+  </update>
+</mapper>

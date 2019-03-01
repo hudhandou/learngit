@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.system.mapper.OperLogMapper">
+	<resultMap type="com.turing.system.entity.OperLog" id="BaseResultMap">
+		<id property="operId" column="oper_id"/>
+		<result property="operPersonid" column="oper_personid"/>
+		<result property="operPersonname" column="oper_personname"/>
+		<result property="operTime" column="oper_time"/>
+		<result property="operType" column="oper_type"/>
+		<result property="operDesc" column="oper_desc"/>
+		<result property="operModel" column="oper_model"/>
+	</resultMap>
+	
+	<select id="queryLog" resultMap="BaseResultMap" parameterType="com.turing.system.page.OperLogPage">
+		select oper_id, oper_personid, oper_personname, oper_time, oper_type, oper_desc, oper_model 
+		from operlog 
+		<where>
+			<if test="name != null and name != ''">
+				oper_personname like concat(concat('%',#{name}),'%')
+			</if>
+		</where>
+		order by oper_time desc
+	</select>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.manage.mapper.SubjectPaperTableMapper">
+  <resultMap id="BaseResultMap" type="com.turing.manage.entity.SubjectPaperTable">
+    <id column="SUBJECT_PAPER_ID" jdbcType="VARCHAR" property="subjectPaperId" />
+    <result column="PAPER_ID" jdbcType="VARCHAR" property="paperId" />
+    <result column="SUBJECT_ID" jdbcType="VARCHAR" property="subjectId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+     SUBJECT_PAPER_ID, PAPER_ID, SUBJECT_ID
+  </sql>
+  <select id="queryquerySubjectPaerById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+     select  subject_id from subject_paper_table where paper_id = #{value}
+  </select>
+   <delete id="deleteSptByPaperId" parameterType="java.lang.String" >
+     delete subject_paper_table where paper_id = #{value}
+   </delete>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from NETEXAM.SUBJECT_PAPER_TABLE
+    where SUBJECT_PAPER_ID = #{subjectPaperId,jdbcType=VARCHAR}
+  </select>
+   <delete id="deleteByPaperId" parameterType="java.lang.String" >
+    delete subject_paper_table where paper_id = #{value}
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+      delete from NETEXAM.SUBJECT_PAPER_TABLE
+      where SUBJECT_PAPER_ID = #{subjectPaperId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.manage.entity.SubjectPaperTable">
+    insert into NETEXAM.SUBJECT_PAPER_TABLE (SUBJECT_PAPER_ID, PAPER_ID, SUBJECT_ID
+      )
+    values (#{subjectPaperId,jdbcType=VARCHAR}, #{paperId,jdbcType=VARCHAR}, #{subjectId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.manage.entity.SubjectPaperTable">
+    insert into NETEXAM.SUBJECT_PAPER_TABLE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="subjectPaperId != null">
+        SUBJECT_PAPER_ID,
+      </if>
+      <if test="paperId != null">
+        PAPER_ID,
+      </if>
+      <if test="subjectId != null">
+        SUBJECT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="subjectPaperId != null">
+        #{subjectPaperId,jdbcType=VARCHAR},
+      </if>
+      <if test="paperId != null">
+        #{paperId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null">
+        #{subjectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.manage.entity.SubjectPaperTable">
+    update NETEXAM.SUBJECT_PAPER_TABLE
+    <set>
+      <if test="paperId != null">
+        PAPER_ID = #{paperId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null">
+        SUBJECT_ID = #{subjectId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SUBJECT_PAPER_ID = #{subjectPaperId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.manage.entity.SubjectPaperTable">
+    update NETEXAM.SUBJECT_PAPER_TABLE
+    set PAPER_ID = #{paperId,jdbcType=VARCHAR},
+      SUBJECT_ID = #{subjectId,jdbcType=VARCHAR}
+    where SUBJECT_PAPER_ID = #{subjectPaperId,jdbcType=VARCHAR}
+  </update>
+</mapper>

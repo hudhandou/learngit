@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.turing.student.mapper.StudentpaperMapper" >
+  <resultMap id="BaseResultMap" type="com.turing.student.entity.Studentpaper" >
+    <id column="STUDENTPAPER_ID" property="studentpaperId" jdbcType="VARCHAR" />
+    <result column="STUDENT_ID" property="studentId" jdbcType="VARCHAR" />
+    <result column="STUDENTPAPER_TOPICS_ID" property="studentpaperTopicsId" jdbcType="VARCHAR" />
+    <result column="STUDENTPAPER_SCORE" property="studentpaperScore" jdbcType="DECIMAL" />
+    <result column="STUDENTPAPER_YONGSHI" property="studentpaperYongshi" jdbcType="DECIMAL" />
+    <result column="STUDENTPAPER_ZONGFEN" property="studentpaperZongfen" jdbcType="DECIMAL" />
+    <result column="STUDENTPAPER_KAOSHISHIJIAN" property="studentpaperKaoshishijian" jdbcType="TIMESTAMP" />
+    <result column="PAPER_ID" property="paperId" jdbcType="VARCHAR" />
+    <result column="STUDENTPAPER_ANSWER" property="studentpaperAnswer" jdbcType="VARCHAR" />
+    <result column="STUDENTPAPER_COUNT" property="studentpaperCount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    STUDENTPAPER_ID, STUDENT_ID, STUDENTPAPER_TOPICS_ID, STUDENTPAPER_SCORE, STUDENTPAPER_YONGSHI, 
+    STUDENTPAPER_ZONGFEN, STUDENTPAPER_KAOSHISHIJIAN, PAPER_ID, STUDENTPAPER_ANSWER, 
+    STUDENTPAPER_COUNT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from NETEXAM.STUDENTPAPER
+    where STUDENTPAPER_ID = #{studentpaperId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from NETEXAM.STUDENTPAPER
+    where STUDENTPAPER_ID = #{studentpaperId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.student.entity.Studentpaper" >
+    insert into NETEXAM.STUDENTPAPER (STUDENTPAPER_ID, STUDENT_ID, STUDENTPAPER_TOPICS_ID, 
+      STUDENTPAPER_SCORE, STUDENTPAPER_YONGSHI, 
+      STUDENTPAPER_ZONGFEN, STUDENTPAPER_KAOSHISHIJIAN, 
+      PAPER_ID, STUDENTPAPER_ANSWER, STUDENTPAPER_COUNT
+      )
+    values (#{studentpaperId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{studentpaperTopicsId,jdbcType=VARCHAR}, 
+      #{studentpaperScore,jdbcType=DECIMAL}, #{studentpaperYongshi,jdbcType=DECIMAL}, 
+      #{studentpaperZongfen,jdbcType=DECIMAL}, #{studentpaperKaoshishijian,jdbcType=TIMESTAMP}, 
+      #{paperId,jdbcType=VARCHAR}, #{studentpaperAnswer,jdbcType=VARCHAR}, #{studentpaperCount,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.student.entity.Studentpaper" >
+    insert into NETEXAM.STUDENTPAPER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="studentpaperId != null" >
+        STUDENTPAPER_ID,
+      </if>
+      <if test="studentId != null" >
+        STUDENT_ID,
+      </if>
+      <if test="studentpaperTopicsId != null" >
+        STUDENTPAPER_TOPICS_ID,
+      </if>
+      <if test="studentpaperScore != null" >
+        STUDENTPAPER_SCORE,
+      </if>
+      <if test="studentpaperYongshi != null" >
+        STUDENTPAPER_YONGSHI,
+      </if>
+      <if test="studentpaperZongfen != null" >
+        STUDENTPAPER_ZONGFEN,
+      </if>
+      <if test="studentpaperKaoshishijian != null" >
+        STUDENTPAPER_KAOSHISHIJIAN,
+      </if>
+      <if test="paperId != null" >
+        PAPER_ID,
+      </if>
+      <if test="studentpaperAnswer != null" >
+        STUDENTPAPER_ANSWER,
+      </if>
+      <if test="studentpaperCount != null" >
+        STUDENTPAPER_COUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="studentpaperId != null" >
+        #{studentpaperId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentpaperTopicsId != null" >
+        #{studentpaperTopicsId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentpaperScore != null" >
+        #{studentpaperScore,jdbcType=DECIMAL},
+      </if>
+      <if test="studentpaperYongshi != null" >
+        #{studentpaperYongshi,jdbcType=DECIMAL},
+      </if>
+      <if test="studentpaperZongfen != null" >
+        #{studentpaperZongfen,jdbcType=DECIMAL},
+      </if>
+      <if test="studentpaperKaoshishijian != null" >
+        #{studentpaperKaoshishijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paperId != null" >
+        #{paperId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentpaperAnswer != null" >
+        #{studentpaperAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="studentpaperCount != null" >
+        #{studentpaperCount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.student.entity.Studentpaper" >
+    update NETEXAM.STUDENTPAPER
+    <set >
+      <if test="studentId != null" >
+        STUDENT_ID = #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentpaperTopicsId != null" >
+        STUDENTPAPER_TOPICS_ID = #{studentpaperTopicsId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentpaperScore != null" >
+        STUDENTPAPER_SCORE = #{studentpaperScore,jdbcType=DECIMAL},
+      </if>
+      <if test="studentpaperYongshi != null" >
+        STUDENTPAPER_YONGSHI = #{studentpaperYongshi,jdbcType=DECIMAL},
+      </if>
+      <if test="studentpaperZongfen != null" >
+        STUDENTPAPER_ZONGFEN = #{studentpaperZongfen,jdbcType=DECIMAL},
+      </if>
+      <if test="studentpaperKaoshishijian != null" >
+        STUDENTPAPER_KAOSHISHIJIAN = #{studentpaperKaoshishijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paperId != null" >
+        PAPER_ID = #{paperId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentpaperAnswer != null" >
+        STUDENTPAPER_ANSWER = #{studentpaperAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="studentpaperCount != null" >
+        STUDENTPAPER_COUNT = #{studentpaperCount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where STUDENTPAPER_ID = #{studentpaperId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.student.entity.Studentpaper" >
+    update NETEXAM.STUDENTPAPER
+    set STUDENT_ID = #{studentId,jdbcType=VARCHAR},
+      STUDENTPAPER_TOPICS_ID = #{studentpaperTopicsId,jdbcType=VARCHAR},
+      STUDENTPAPER_SCORE = #{studentpaperScore,jdbcType=DECIMAL},
+      STUDENTPAPER_YONGSHI = #{studentpaperYongshi,jdbcType=DECIMAL},
+      STUDENTPAPER_ZONGFEN = #{studentpaperZongfen,jdbcType=DECIMAL},
+      STUDENTPAPER_KAOSHISHIJIAN = #{studentpaperKaoshishijian,jdbcType=TIMESTAMP},
+      PAPER_ID = #{paperId,jdbcType=VARCHAR},
+      STUDENTPAPER_ANSWER = #{studentpaperAnswer,jdbcType=VARCHAR},
+      STUDENTPAPER_COUNT = #{studentpaperCount,jdbcType=DECIMAL}
+    where STUDENTPAPER_ID = #{studentpaperId,jdbcType=VARCHAR}
+  </update>
+</mapper>

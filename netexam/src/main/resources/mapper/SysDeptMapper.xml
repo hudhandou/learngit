@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.system.mapper.SysDeptMapper">
+  <resultMap id="BaseResultMap" type="com.turing.system.entity.SysDept">
+    <id column="DEPT_ID" jdbcType="VARCHAR" property="deptId" />
+    <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+    <result column="DEPT_CODE" jdbcType="VARCHAR" property="deptCode" />
+    <result column="DEPT_INFO" jdbcType="VARCHAR" property="deptInfo" />
+    <result column="DEPT_PHONE" jdbcType="VARCHAR" property="deptPhone" />
+    <result column="DEPT_SEQU" jdbcType="DECIMAL" property="deptSequ" />
+    <result column="DEPT_STATE" jdbcType="VARCHAR" property="deptState" />
+    <result column="DEPT_PAR" jdbcType="VARCHAR" property="deptPar" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DEPT_ID, DEPT_NAME, DEPT_CODE, DEPT_INFO, DEPT_PHONE, DEPT_SEQU, DEPT_STATE, DEPT_PAR
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPT
+    where DEPT_ID = #{deptId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPT
+  </select>
+  <select id="queryAllDeptByTop" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPT
+    where DEPT_PAR = '0'
+    order by DEPT_SEQU
+  </select>
+  <select id="queryDeptByOne" parameterType="com.turing.system.entity.SysDept" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPT
+    where 1=1
+    <if test="deptId!=null">
+     and DEPT_PAR = #{deptId,jdbcType=VARCHAR} 
+    </if>
+    order by DEPT_SEQU
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_DEPT
+    where DEPT_ID = #{deptId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.turing.system.entity.SysDept">
+    insert into SYS_DEPT (DEPT_ID, DEPT_NAME, DEPT_CODE, 
+      DEPT_INFO, DEPT_PHONE, DEPT_SEQU, 
+      DEPT_STATE, DEPT_PAR)
+    values (#{deptId,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR}, 
+      #{deptInfo,jdbcType=VARCHAR}, #{deptPhone,jdbcType=VARCHAR}, #{deptSequ,jdbcType=DECIMAL}, 
+      #{deptState,jdbcType=VARCHAR}, #{deptPar,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.system.entity.SysDept">
+    insert into SYS_DEPT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deptId != null">
+        DEPT_ID,
+      </if>
+      <if test="deptName != null">
+        DEPT_NAME,
+      </if>
+      <if test="deptCode != null">
+        DEPT_CODE,
+      </if>
+      <if test="deptInfo != null">
+        DEPT_INFO,
+      </if>
+      <if test="deptPhone != null">
+        DEPT_PHONE,
+      </if>
+      <if test="deptSequ != null">
+        DEPT_SEQU,
+      </if>
+      <if test="deptState != null">
+        DEPT_STATE,
+      </if>
+      <if test="deptPar != null">
+        DEPT_PAR,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deptId != null">
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null">
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptCode != null">
+        #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptInfo != null">
+        #{deptInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="deptPhone != null">
+        #{deptPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="deptSequ != null">
+        #{deptSequ,jdbcType=DECIMAL},
+      </if>
+      <if test="deptState != null">
+        #{deptState,jdbcType=VARCHAR},
+      </if>
+      <if test="deptPar != null">
+        #{deptPar,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.system.entity.SysDept">
+    update SYS_DEPT
+    <set>
+      <if test="deptName != null">
+        DEPT_NAME = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptCode != null">
+        DEPT_CODE = #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptInfo != null">
+        DEPT_INFO = #{deptInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="deptPhone != null">
+        DEPT_PHONE = #{deptPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="deptSequ != null">
+        DEPT_SEQU = #{deptSequ,jdbcType=DECIMAL},
+      </if>
+      <if test="deptState != null">
+        DEPT_STATE = #{deptState,jdbcType=VARCHAR},
+      </if>
+      <if test="deptPar != null">
+        DEPT_PAR = #{deptPar,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DEPT_ID = #{deptId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.system.entity.SysDept">
+    update SYS_DEPT
+    set DEPT_NAME = #{deptName,jdbcType=VARCHAR},
+      DEPT_CODE = #{deptCode,jdbcType=VARCHAR},
+      DEPT_INFO = #{deptInfo,jdbcType=VARCHAR},
+      DEPT_PHONE = #{deptPhone,jdbcType=VARCHAR},
+      DEPT_SEQU = #{deptSequ,jdbcType=DECIMAL},
+      DEPT_STATE = #{deptState,jdbcType=VARCHAR},
+      DEPT_PAR = #{deptPar,jdbcType=VARCHAR}
+    where DEPT_ID = #{deptId,jdbcType=VARCHAR}
+  </update>
+  <select id="yanzhengDeleteDept" resultType="int" parameterType="string">
+  	select sum(ge)ge from(
+		select count(0)ge from GDZC_GONGCHENG where DEPT_ID=#{id}
+		union all
+		select count(0)ge from KCGL_CANGKU where DEPT_ID=#{id}
+		union all
+		select count(0)ge from KHGL_LIANXIREN where DEPT_ID=#{id}
+		union all
+		select count(0)ge from SYS_PERSON where DEPT_ID=#{id}
+		union all
+		select count(0)ge from SYS_POST where DEPT_ID=#{id}
+		union all
+		select count(0)ge from WF_LIUCHENG where DEPT_ID=#{id}
+	)t
+  </select>
+</mapper>
